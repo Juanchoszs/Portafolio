@@ -1,0 +1,61 @@
+import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
+
+export async function POST(req: Request) {
+  try {
+    const { name, email, message } = await req.json();
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.gmail_user,
+        pass: process.env.gmail_password,
+      },
+    });
+
+    // Email to the portfolio owner
+    const mailOptionsToOwner = {
+      from: process.env.gmail_user,
+      to: 'juanchopolas04090@gmail.com',
+      subject: `Nuevo mensaje de contacto de ${name}`,
+      text: `
+        Nombre: ${name}
+        Email: ${email}
+        Mensaje: ${message}
+      `,
+      html: `
+        <h3>Nuevo mensaje de contacto</h3>
+        <p><strong>Nombre:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mensaje:</strong></p>
+        <p>${message}</p>
+      `,
+    };
+
+    // Auto-reply to the sender
+    const mailOptionsToSender = {
+      from: process.env.gmail_user,
+      to: email,
+      subject: 'Gracias por contactarme - Juan Sebastian Rincon',
+      text: `Hola ${name},\n\nGracias por escribirme. He recibido tu mensaje y me pondré en contacto contigo lo antes posible.\n\nSaludos,\nJuan Sebastian Rincon Linares`,
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <h2>Hola ${name},</h2>
+          <p>Gracias por escribirme. He recibido tu mensaje y me pondré en contacto contigo lo antes posible.</p>
+          <br>
+          <p>Saludos,</p>
+          <p><strong>Juan Sebastian Rincon Linares</strong></p>
+          <p>Full Stack Developer</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptionsToOwner);
+    await transporter.sendMail(mailOptionsToSender);
+
+    return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return NextResponse.json({ error: 'Error sending email' }, { status: 500 });
+  }
+}
