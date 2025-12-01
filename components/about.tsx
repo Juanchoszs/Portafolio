@@ -1,6 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { TerminalWindow } from "./terminal-window"
+import { CodeRain } from "./code-rain"
 
 export function About() {
   return (
@@ -48,6 +50,17 @@ export function About() {
                 pagos, y generación de documentos, todo construido con tecnologías web modernas.
               </p>
             </div>
+          </motion.div>
+
+          {/* Terminal Window */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mt-8"
+          >
+            <TerminalWindow />
           </motion.div>
         </div>
 

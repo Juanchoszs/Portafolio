@@ -53,6 +53,36 @@ export function Contact() {
       {/* Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px]" />
+        
+        {/* Circuit board pattern */}
+        <div className="absolute inset-0 opacity-[0.02]">
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="circuit" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                <circle cx="50" cy="50" r="1" fill="#3b82f6" />
+                <line x1="50" y1="0" x2="50" y2="100" stroke="#3b82f6" strokeWidth="0.3" />
+                <line x1="0" y1="50" x2="100" y2="50" stroke="#3b82f6" strokeWidth="0.3" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#circuit)" />
+          </svg>
+        </div>
+
+        {/* Floating envelope icons */}
+        <motion.div
+          className="absolute top-1/4 right-1/4 text-blue-400/[0.03]"
+          animate={{ y: [0, -15, 0], rotate: [0, 3, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <Mail className="w-12 h-12" />
+        </motion.div>
+        <motion.div
+          className="absolute bottom-1/3 left-1/4 text-blue-400/[0.03]"
+          animate={{ y: [0, 15, 0], rotate: [0, -3, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <Send className="w-10 h-10" />
+        </motion.div>
       </div>
 
       <div className="container mx-auto max-w-6xl relative z-10">
@@ -179,21 +209,23 @@ export function Contact() {
                       required
                       value={formState.name}
                       onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-600"
+                      className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all placeholder:text-slate-600"
                       placeholder="Tu nombre"
                     />
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-medium text-slate-300">Email</label>
-                    <input
-                      id="email"
-                      type="email"
-                      required
-                      value={formState.email}
-                      onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-600"
-                      placeholder="tu@email.com"
-                    />
+                    <div className="relative">
+                      <input
+                        id="email"
+                        type="email"
+                        required
+                        value={formState.email}
+                        onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all placeholder:text-slate-600"
+                        placeholder="tu@email.com"
+                      />
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="message" className="text-sm font-medium text-slate-300">Mensaje</label>
@@ -203,7 +235,7 @@ export function Contact() {
                       rows={4}
                       value={formState.message}
                       onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-600 resize-none"
+                      className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all placeholder:text-slate-600 resize-none"
                       placeholder="¿En qué puedo ayudarte?"
                     />
                   </div>

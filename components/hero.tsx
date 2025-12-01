@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, Linkedin, Mail, Phone, Github, Download, Terminal, Code2 } from "lucide-react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useState, useEffect } from "react"
+import { ParticlesBackground } from "./particles-background"
 
 export function Hero() {
   const [text, setText] = useState("")
@@ -42,6 +43,8 @@ export function Hero() {
       {/* Abstract Tech Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-[0.2]" />
+        
+        <ParticlesBackground />
         
         <motion.div
           style={{ y: y1 }}

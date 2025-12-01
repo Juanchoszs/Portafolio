@@ -84,7 +84,7 @@ export function Skills() {
             <motion.div
               key={category.title}
               variants={item}
-              className="group relative overflow-hidden rounded-2xl bg-slate-900/50 border border-slate-800 p-6 hover:border-blue-500/30 transition-all duration-300"
+              className="group relative overflow-hidden rounded-2xl bg-slate-900/50 border border-slate-800 p-6 hover:border-blue-500/30 transition-all duration-300 hover:scale-[1.01]"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
@@ -100,12 +100,13 @@ export function Skills() {
 
                 <div className="flex flex-wrap gap-2">
                   {category.skills.map((skill) => (
-                    <span 
+                    <motion.span 
                       key={skill}
-                      className="px-3 py-1.5 text-xs font-medium rounded-md bg-slate-950/80 text-slate-400 border border-slate-800 hover:text-blue-300 hover:border-blue-500/30 transition-all cursor-default"
+                      className="px-3 py-1.5 text-xs font-medium rounded-md bg-slate-950/80 text-slate-400 border border-slate-800 hover:text-blue-300 hover:border-blue-500/30 hover:bg-slate-900 transition-all cursor-default"
+                      whileHover={{ scale: 1.03, y: -1 }}
                     >
                       {skill}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
               </div>
