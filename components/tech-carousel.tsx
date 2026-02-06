@@ -76,10 +76,10 @@ export function TechCarousel() {
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <div className="w-20 h-20 flex items-center justify-center rounded-2xl bg-slate-900/80 border border-slate-800 group-hover:border-blue-500/50 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all duration-300 p-4 backdrop-blur-sm">
-              <img 
-                src={tech.icon || "/placeholder.svg"} 
-                alt={tech.name} 
-                className="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300" 
+              <img
+                src={tech.icon || "/placeholder.svg"}
+                alt={tech.name}
+                className="w-full h-full object-contain transition-all duration-300"
               />
             </div>
             <span className="text-sm font-medium text-slate-400 group-hover:text-blue-400 transition-colors">

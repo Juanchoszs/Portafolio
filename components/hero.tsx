@@ -1,10 +1,11 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Linkedin, Mail, Phone, Github, Download, Terminal, Code2 } from "lucide-react"
-import { motion, useScroll, useTransform } from "framer-motion"
-import { useState, useEffect } from "react"
+import { ArrowRight, Linkedin, Mail, Github, Download } from "lucide-react"
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
 import { ParticlesBackground } from "./particles-background"
+import Image from "next/image"
 
 export function Hero() {
   const [text, setText] = useState("")
@@ -16,6 +17,32 @@ export function Hero() {
   const { scrollY } = useScroll()
   const y1 = useTransform(scrollY, [0, 500], [0, 200])
   const y2 = useTransform(scrollY, [0, 500], [0, -150])
+
+  // 3D Card Effect Logic
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  const mouseX = useSpring(x, { stiffness: 500, damping: 100 })
+  const mouseY = useSpring(y, { stiffness: 500, damping: 100 })
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top, width, height } = currentTarget.getBoundingClientRect()
+    const xPct = clientX - left - width / 2
+    const yPct = clientY - top - height / 2
+
+    x.set(xPct)
+    y.set(yPct)
+  }
+
+  function handleMouseLeave() {
+    x.set(0)
+    y.set(0)
+  }
+
+  const rotateX = useTransform(mouseY, [-200, 200], [15, -15])
+  const rotateY = useTransform(mouseX, [-200, 200], [-15, 15])
+  const translateZ = useTransform(mouseY, [-200, 200], [10, -10])
+
 
   useEffect(() => {
     const handleTyping = () => {
@@ -43,9 +70,9 @@ export function Hero() {
       {/* Abstract Tech Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-[0.2]" />
-        
+
         <ParticlesBackground />
-        
+
         <motion.div
           style={{ y: y1 }}
           className="absolute top-20 left-10 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px]"
@@ -76,7 +103,7 @@ export function Hero() {
               </span>
               Disponible para trabajar
             </motion.div>
-            
+
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white">
               Juan Sebastian
               <br />
@@ -84,7 +111,7 @@ export function Hero() {
                 Rincon Linares
               </span>
             </h1>
-            
+
             <div className="h-8 md:h-10 flex items-center">
               <span className="text-xl md:text-2xl text-slate-400 font-mono">
                 &gt; {text}
@@ -93,7 +120,7 @@ export function Hero() {
             </div>
 
             <p className="text-lg text-slate-400 max-w-xl leading-relaxed">
-              Desarrollador apasionado por crear experiencias web modernas, escalables y visualmente impactantes. 
+              Desarrollador apasionado por crear experiencias web modernas, escalables y visualmente impactantes.
               Especializado en el ecosistema React y TypeScript.
             </p>
           </motion.div>
@@ -156,64 +183,59 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Abstract Code Visual */}
+        {/* 3D Profile Card Feature */}
         <motion.div
-          className="hidden lg:block relative"
+          className="hidden lg:flex items-center justify-center [perspective:1000px]"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
+          style={{ perspective: 1000 }}
         >
-          <div className="relative z-10 bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-2xl backdrop-blur-sm">
-            <div className="flex items-center gap-2 mb-4 border-b border-slate-800 pb-4">
-              <div className="w-3 h-3 rounded-full bg-red-500" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500" />
-              <div className="w-3 h-3 rounded-full bg-green-500" />
-              <div className="ml-auto flex items-center gap-2 text-xs text-slate-500">
-                <Terminal className="w-3 h-3" />
-                developer.tsx
-              </div>
+          <motion.div
+            className="relative w-80 h-[28rem] rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 shadow-2xl cursor-pointer [transform-style:preserve-3d] group"
+            style={{
+              rotateX,
+              rotateY,
+              transformStyle: "preserve-3d"
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            {/* Holographic Border Effect */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" style={{ transform: "translateZ(1px)" }} />
+
+            {/* Profile Image */}
+            <div className="absolute inset-4 rounded-xl overflow-hidden border border-slate-700/50 shadow-inner bg-slate-900" style={{ transform: "translateZ(20px)" }}>
+              <div className="absolute inset-0 bg-blue-500/10 z-10 mix-blend-overlay group-hover:opacity-0 transition-opacity duration-300" />
+              <Image
+                src="/Perfil.jpeg"
+                alt="Juan Rincon"
+                fill
+                className="object-cover object-top"
+                priority
+              />
             </div>
-            <div className="space-y-2 font-mono text-sm">
-              <div className="flex gap-2">
-                <span className="text-pink-400">const</span>
-                <span className="text-blue-400">developer</span>
-                <span className="text-slate-400">=</span>
-                <span className="text-yellow-400">{"{"}</span>
-              </div>
-              <div className="pl-4 flex gap-2">
-                <span className="text-slate-300">name:</span>
-                <span className="text-green-400">"Juan Rincon"</span>,
-              </div>
-              <div className="pl-4 flex gap-2">
-                <span className="text-slate-300">role:</span>
-                <span className="text-green-400">"Full Stack Dev"</span>,
-              </div>
-              <div className="pl-4 flex gap-2">
-                <span className="text-slate-300">skills:</span>
-                <span className="text-purple-400">["React", "Next.js", "Node"]</span>,
-              </div>
-              <div className="pl-4 flex gap-2">
-                <span className="text-slate-300">hardWorker:</span>
-                <span className="text-orange-400">true</span>,
-              </div>
-              <div className="flex gap-2">
-                <span className="text-yellow-400">{"}"}</span>
-              </div>
-              <div className="pt-4 flex gap-2">
-                <span className="text-pink-400">export</span>
-                <span className="text-pink-400">default</span>
-                <span className="text-blue-400">developer</span>
-              </div>
-            </div>
-            
-            <motion.div 
-              className="absolute -right-6 -bottom-6 p-4 bg-blue-600 rounded-xl shadow-lg shadow-blue-600/20"
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+
+            {/* Floating Badge */}
+            <motion.div
+              className="absolute bottom-8 right-8 px-4 py-2 bg-blue-600/90 backdrop-blur-md text-white text-sm font-bold rounded-lg shadow-lg border border-blue-400/20"
+              style={{ transform: "translateZ(50px)" }}
             >
-              <Code2 className="w-8 h-8 text-white" />
+              DevOps & FullStack
             </motion.div>
-          </div>
+
+            {/* Tech Stack Floating Icons (Small Detail) */}
+            <motion.div
+              className="absolute -top-6 -right-6 p-3 bg-slate-900 rounded-xl border border-slate-800 shadow-xl"
+              style={{ transform: "translateZ(30px)" }}
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <div className="w-8 h-8 flex items-center justify-center text-blue-400 text-xs font-mono">
+                &lt;/&gt;
+              </div>
+            </motion.div>
+          </motion.div>
         </motion.div>
       </div>
 
