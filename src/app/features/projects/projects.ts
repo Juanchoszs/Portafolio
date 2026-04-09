@@ -20,7 +20,7 @@ export class ProjectsComponent {
       tags: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
       link: 'https://golica.vercel.app/',
       isPrivate: false,
-      image: 'assets/images/image.png'
+      image: 'images/image.png'
     },
     {
       id: 'cromu',
@@ -80,7 +80,7 @@ export class ProjectsComponent {
       tags: ['Python', 'Pandas', 'ARIMA', 'Plotly'],
       link: null,
       isPrivate: true,
-      image: 'assets/images/SP_1.jpeg'
+      image: 'images/SP_1.jpeg'
     }
   ];
 }
