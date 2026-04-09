@@ -1,0 +1,77 @@
+<section class="min-h-[90vh] py-24 flex items-center relative overflow-hidden perspective-1000">
+  
+  <div class="absolute inset-0 z-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+CjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiIGZpbGw9Im5vbmUiLz4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMC41IiBmaWxsPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMSkiLz4KPC9zdmc+')]"></div>
+
+  <div class="max-w-7xl mx-auto px-6 md:px-12 w-full z-10" *ngIf="isLoaded" @splitReveal>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+      
+      <!-- Textos Izquierda -->
+      <div class="pt-10 lg:pt-0">
+        <h2 class="contact-text text-xs font-bold text-emerald-400 tracking-[0.2em] uppercase mb-4 flex items-center gap-3">
+          <span class="w-8 h-[2px] bg-emerald-400"></span> Conexión
+        </h2>
+        
+        <h3 class="contact-text text-6xl md:text-8xl font-black text-white tracking-tighter mb-8 leading-[1]">
+          ¿Ideamos <br/> algo <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Grande?</span>
+        </h3>
+        
+        <p class="contact-text text-gray-400 text-xl max-w-md font-light mb-16 leading-relaxed">
+          Ya sea que tengas una idea disruptiva, necesites escalar tu arquitectura actual, o simplemente quieras saludar.
+        </p>
+
+        <div class="contact-text space-y-10 border-l-2 border-white/5 pl-8">
+          
+          <div class="group relative">
+            <div class="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-2">Canal Principal</div>
+            <a [href]="'mailto:' + email" class="text-2xl md:text-3xl text-white font-medium hover:text-emerald-400 transition-colors inline-block pb-1 border-b-2 border-transparent hover:border-emerald-400">
+              {{ email }}
+            </a>
+          </div>
+
+          <div class="group relative">
+            <div class="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-2">Llamada Directa</div>
+            <a [href]="'tel:' + phone" class="text-2xl md:text-3xl text-white font-medium hover:text-emerald-400 transition-colors inline-block pb-1 border-b-2 border-transparent hover:border-emerald-400">
+              +57 {{ phone }}
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Card Formulario Derecha -->
+      <div class="contact-card relative">
+        <div class="absolute -inset-1 bg-gradient-to-tr from-emerald-500/20 to-blue-500/20 rounded-[3rem] blur-xl opacity-50"></div>
+        <div class="relative bg-[#050505] border border-white/10 rounded-[3rem] p-10 md:p-14 shadow-2xl">
+          
+          <form (submit)="submitForm($event)" class="space-y-8">
+            <div class="space-y-3">
+              <label class="text-xs font-bold text-gray-400 uppercase tracking-widest">Nombre Completo</label>
+              <input type="text" placeholder="Ej. Elon Musk" required 
+                class="w-full bg-black border-b-2 border-white/10 px-0 py-4 text-white text-lg placeholder:text-gray-600 focus:outline-none focus:border-emerald-500 transition-colors" />
+            </div>
+            
+            <div class="space-y-3">
+              <label class="text-xs font-bold text-gray-400 uppercase tracking-widest">Correo Electrónico</label>
+              <input type="email" placeholder="elon@tesla.com" required 
+                class="w-full bg-black border-b-2 border-white/10 px-0 py-4 text-white text-lg placeholder:text-gray-600 focus:outline-none focus:border-emerald-500 transition-colors" />
+            </div>
+
+            <div class="space-y-3">
+              <label class="text-xs font-bold text-gray-400 uppercase tracking-widest">El Desafío</label>
+              <textarea placeholder="Cuéntame sobre tu proyecto..." rows="3" required 
+                class="w-full bg-black border-b-2 border-white/10 px-0 py-4 text-white text-lg placeholder:text-gray-600 focus:outline-none focus:border-emerald-500 transition-colors resize-none"></textarea>
+            </div>
+
+            <button type="submit" 
+              class="w-full relative overflow-hidden group bg-white text-black font-black uppercase tracking-widest text-sm rounded-full py-6 mt-4 transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+              <span class="relative z-10 group-hover:text-white transition-colors duration-300">Lanzar Mensaje</span>
+              <div class="absolute inset-0 h-full w-0 bg-emerald-500 transition-[width] duration-[400ms] ease-out group-hover:w-full z-0"></div>
+            </button>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

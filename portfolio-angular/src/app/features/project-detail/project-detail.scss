@@ -1,0 +1,546 @@
+// Utilities para 3D
+.perspective-container {
+  perspective: 1500px;
+}
+
+.scene-3d {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+// Variables comunes Isométricas
+$iso-transform: rotateX(60deg) rotateZ(-45deg);
+
+/* ==============================================
+   1. GOL ICA - Campo Isométrico y Balón
+   ============================================== */
+.gol-ica-scene {
+  .isometric-field {
+    width: 300px;
+    height: 450px;
+    background: repeating-linear-gradient(
+      0deg,
+      #1a472a,
+      #1a472a 40px,
+      #1e5331 40px,
+      #1e5331 80px
+    );
+    border: 4px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    transform: $iso-transform;
+    position: relative;
+    box-shadow: 0 50px 50px rgba(0,0,0,0.5), inset 0 0 100px rgba(0,0,0,0.5);
+    
+    .center-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.5);
+      transform: translateY(-50%);
+    }
+    .field-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80px;
+      height: 80px;
+      border: 4px solid rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .penalty-box {
+      position: absolute;
+      width: 120px;
+      height: 60px;
+      border: 4px solid rgba(255, 255, 255, 0.5);
+      left: 50%;
+      transform: translateX(-50%);
+      &.left { top: 0; border-top: none; }
+      &.right { bottom: 0; border-bottom: none; }
+    }
+
+    .soccer-ball {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: #fff;
+      border-radius: 50%;
+      // Desfazamos la perspectiva para que se vea esférica y no aplastada por la isometría del campo
+      transform: rotateZ(45deg) rotateX(-60deg) translateZ(15px); 
+      animation: ball-move 3s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
+      box-shadow: inset -5px -5px 10px rgba(0,0,0,0.5), 0 30px 20px rgba(0,0,0,0.4);
+      
+      .ball-texture {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-image: radial-gradient(circle at center, #000 15%, transparent 20%),
+                          radial-gradient(circle at 10px 10px, #000 15%, transparent 20%),
+                          radial-gradient(circle at 20px 20px, #000 15%, transparent 20%);
+        animation: spin-ball 1s linear infinite;
+      }
+    }
+  }
+
+  @keyframes ball-move {
+    0% { top: 10%; left: 20%; }
+    50% { top: 50%; left: 80%; transform: rotateZ(45deg) rotateX(-60deg) translateZ(40px); } // rebote
+    100% { top: 85%; left: 50%; }
+  }
+  @keyframes spin-ball {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+}
+
+/* ==============================================
+   2. CROMU - Hucha 3D y Monedas
+   ============================================== */
+.cromu-scene {
+  .piggy-bank-system {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    transform: $iso-transform;
+    transform-style: preserve-3d;
+
+    .bank-cube {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+      
+      .face {
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        background: rgba(30, 64, 175, 0.8);
+        border: 2px solid rgba(96, 165, 250, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: black;
+        color: rgba(255,255,255,0.2);
+        font-size: 2rem;
+        backdrop-filter: blur(5px);
+      }
+      .front  { transform: translateZ(80px); }
+      .back   { transform: rotateY(180deg) translateZ(80px); }
+      .right  { transform: rotateY(90deg) translateZ(80px); }
+      .left   { transform: rotateY(-90deg) translateZ(80px); }
+      .top    { transform: rotateX(90deg) translateZ(80px); background: rgba(30, 64, 175, 0.9); }
+      .bottom { transform: rotateX(-90deg) translateZ(80px); background: rgba(17, 24, 39, 0.9); }
+
+      .coin-slot {
+        width: 60px;
+        height: 10px;
+        background: #000;
+        border-radius: 5px;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
+      }
+    }
+
+    .coin {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle, #fbbf24, #d97706);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      border: 3px dashed #f59e0b;
+      margin-left: -20px;
+      margin-top: -20px;
+      transform-style: preserve-3d;
+      animation: coin-drop 2s ease-in infinite;
+      box-shadow: 0 10px 15px rgba(0,0,0,0.5);
+
+      &.coin-1 { animation-delay: 0s; }
+      &.coin-2 { animation-delay: 0.6s; left: 45%; }
+      &.coin-3 { animation-delay: 1.2s; left: 55%; }
+    }
+
+    @keyframes coin-drop {
+      0% { transform: rotateX(90deg) translateZ(300px) rotateY(0deg); opacity: 0; }
+      20% { opacity: 1; }
+      80% { transform: rotateX(90deg) translateZ(80px) rotateY(360deg); opacity: 1; }
+      100% { transform: rotateX(90deg) translateZ(60px) rotateY(450deg); opacity: 0; } // Entra en la ranura
+    }
+  }
+}
+
+/* ==============================================
+   3. SIIGO - Flujo de Documentos Digitales
+   ============================================== */
+.siigo-scene {
+  .siigo-system {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    transform: $iso-transform;
+    transform-style: preserve-3d;
+
+    .integration-hub {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      transform-style: preserve-3d;
+
+      .ring {
+        position: absolute;
+        top: 50%; left: 50%;
+        border-radius: 50%;
+        border: 4px solid transparent;
+        transform: translate(-50%, -50%);
+        transform-style: preserve-3d;
+      }
+      .outer-ring {
+        width: 150px; height: 150px;
+        border-top-color: #3b82f6;
+        border-bottom-color: #8b5cf6;
+        animation: spin-ring 4s linear infinite;
+      }
+      .inner-ring {
+        width: 100px; height: 100px;
+        border-left-color: #10b981;
+        border-right-color: #06b6d4;
+        animation: spin-ring 2s linear infinite reverse;
+      }
+      .data-core {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 60px; height: 60px;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(5px);
+        transform: translate(-50%, -50%) translateZ(20px);
+        display: flex; align-items: center; justify-content: center;
+        font-weight: bold; color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+      }
+    }
+
+    .document {
+      position: absolute;
+      width: 30px; height: 40px;
+      /* Blanco translúcido para parecer papel digital */
+      background: rgba(255,255,255,0.8);
+      border-radius: 2px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+      animation: doc-fly 2s linear infinite;
+      
+      &.doc-1 { top: -100px; left: -100px; animation-delay: 0s; }
+      &.doc-2 { top: -100px; left: 300px; animation-delay: 0.5s; }
+      &.doc-3 { top: 300px; left: -100px; animation-delay: 1s; }
+      &.doc-4 { top: 300px; left: 300px; animation-delay: 1.5s; }
+    }
+
+    @keyframes doc-fly {
+      0% { transform: translateZ(50px) scale(0); opacity: 0; }
+      50% { opacity: 1; transform: translateZ(100px) scale(1); }
+      100% { top: 135px; left: 135px; transform: translateZ(20px) scale(0.2); opacity: 0; }
+    }
+    @keyframes spin-ring {
+      from { transform: translate(-50%, -50%) rotateZ(0deg); }
+      to { transform: translate(-50%, -50%) rotateZ(360deg); }
+    }
+  }
+}
+
+/* ==============================================
+   4. FUEC - Impresora Isométrica
+   ============================================== */
+.fuec-scene {
+  .printer-3d {
+    position: relative;
+    width: 150px;
+    height: 100px;
+    transform: $iso-transform;
+    transform-style: preserve-3d;
+
+    .printer-body {
+      width: 100%; height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+      
+      .face {
+        position: absolute;
+        background: #1f2937;
+        border: 2px solid #374151;
+      }
+      .top {
+        width: 150px; height: 100px;
+        transform: translateZ(60px);
+        background: #374151;
+      }
+      .front {
+        width: 150px; height: 60px;
+        transform: rotateX(90deg) translateZ(50px) translateY(30px);
+        display: flex; align-items: flex-end; justify-content: center;
+        
+        .output-slot {
+          width: 80%; height: 6px;
+          background: #000;
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    .printed-paper {
+      position: absolute;
+      width: 100px; height: 140px;
+      background: #f3f4f6;
+      left: 25px;
+      // Posicionado para salir por la ranura frontal
+      transform-origin: top center;
+      transform: rotateX(90deg) translateZ(50px) translateY(30px) translateY(10px) rotateX(-90deg) translateZ(-60px);
+      animation: printing 3s ease-in-out infinite;
+      box-shadow: 0 50px 20px rgba(0,0,0,0.5);
+      padding: 10px;
+      display: flex; flex-direction: column; gap: 8px;
+
+      .line { height: 4px; background: #d1d5db; border-radius: 2px; }
+      .l1 { width: 40%; }
+      .l2 { width: 80%; }
+      .l3 { width: 60%; }
+      .stamp {
+        margin-top: auto; align-self: flex-end;
+        width: 20px; height: 20px;
+        border: 2px solid #ef4444; border-radius: 50%;
+        opacity: 0;
+        animation: stamp-apply 3s ease-in-out infinite;
+      }
+    }
+
+    @keyframes printing {
+      0% { transform: rotateX(90deg) translateZ(50px) translateY(30px) translateY(10px) rotateX(-90deg) translateZ(-140px); }
+      70%, 90% { transform: rotateX(90deg) translateZ(50px) translateY(30px) translateY(10px) rotateX(-90deg) translateZ(20px); }
+      100% { transform: rotateX(90deg) translateZ(50px) translateY(30px) translateY(10px) rotateX(-90deg) translateZ(20px) translateY(50px); opacity: 0; }
+    }
+    @keyframes stamp-apply {
+      0%, 65% { opacity: 0; transform: scale(2); }
+      75%, 100% { opacity: 1; transform: scale(1); }
+    }
+  }
+}
+
+/* ==============================================
+   5. REMESAS - Camión Logístico
+   ============================================== */
+.remesas-scene {
+  .truck-system {
+    position: relative;
+    width: 300px;
+    height: 100px;
+    transform: $iso-transform;
+    transform-style: preserve-3d;
+
+    .road {
+      position: absolute;
+      width: 600px; height: 100px;
+      left: -150px;
+      background: #111827;
+      border-top: 4px dashed #fbbf24;
+      border-bottom: 4px dashed #fbbf24;
+      animation: move-road 1s linear infinite;
+    }
+
+    .truck {
+      position: absolute;
+      left: 50%; top: 20px;
+      width: 140px; height: 60px;
+      transform-style: preserve-3d;
+      animation: truck-bounce 0.5s ease-in-out infinite alternate;
+
+      .cabin {
+        position: absolute;
+        right: 0; width: 40px; height: 50px; background: #3b82f6;
+        transform: translateZ(20px);
+        border-radius: 4px 10px 0 0;
+        .window {
+          position: absolute;
+          top: 10px; right: 5px; width: 15px; height: 20px;
+          background: #93c5fd; border-radius: 4px;
+        }
+      }
+      .trailer {
+        position: absolute;
+        left: 0; width: 95px; height: 60px; background: #e5e7eb;
+        transform: translateZ(25px);
+        border-radius: 4px;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: inset -5px -5px 15px rgba(0,0,0,0.2);
+        
+        .cargo-box {
+          font-weight: black; color: #9ca3af; font-size: 10px;
+          transform: rotateZ(90deg); letter-spacing: 2px;
+        }
+      }
+      .wheels {
+        position: absolute; width: 100%; height: 100%; transform-style: preserve-3d;
+        .wheel {
+          position: absolute; width: 16px; height: 16px; background: #000; border-radius: 50%;
+          transform: rotateX(90deg) translateZ(10px);
+          border: 2px solid #4b5563;
+        }
+        .w1 { left: 10px; top: -8px; }
+        .w2 { left: 70px; top: -8px; }
+        .w3 { right: 10px; top: -8px; }
+        .w4 { left: 10px; bottom: -8px; } // Solo como truco visual, no real 3D por rendimiento
+      }
+    }
+
+    @keyframes move-road {
+      from { background-position: 0 0; }
+      to { background-position: -50px 0; } // Simula movimiento
+    }
+    @keyframes truck-bounce {
+      from { transform: translate(-50%, 0) translateZ(0); }
+      to { transform: translate(-50%, 0) translateZ(2px); }
+    }
+  }
+}
+
+/* ==============================================
+   6. TRAZABILIDAD - Barras 3D Neón
+   ============================================== */
+.trazabilidad-scene {
+  .metrics-grid {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    transform: $iso-transform;
+    transform-style: preserve-3d;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    border-left: 2px solid rgba(255,255,255,0.2);
+    padding-bottom: 10px;
+
+    .bar-3d {
+      position: relative;
+      width: 30px;
+      background: #8b5cf6;
+      transform-style: preserve-3d;
+      transform-origin: bottom center;
+      
+      .bar-top {
+        position: absolute;
+        top: 0; left: 0; width: 30px; height: 30px;
+        background: #a78bfa;
+        transform: rotateX(90deg);
+        transform-origin: top center;
+      }
+      .bar-front {
+        position: absolute;
+        width: 100%; height: 100%;
+        background: linear-gradient(to top, #6d28d9, #8b5cf6);
+        transform: rotateX(90deg) translateY(30px) rotateX(-90deg);
+      }
+      .bar-side {
+        position: absolute;
+        width: 30px; height: 100%;
+        background: #5b21b6;
+        right: 0;
+        transform: rotateY(90deg);
+        transform-origin: right center;
+      }
+      
+      &.bar-1 { height: 40px; animation: bar-rise 3s infinite alternate; }
+      &.bar-2 { height: 120px; animation: bar-rise 4s infinite alternate-reverse; }
+      &.bar-3 { height: 80px; animation: bar-rise 2s infinite alternate; }
+      &.bar-4 { height: 180px; animation: bar-rise 5s infinite alternate-reverse; }
+      &.bar-5 { height: 100px; animation: bar-rise 3.5s infinite alternate; }
+    }
+
+    @keyframes bar-rise {
+      0% { transform: translateZ(0) scaleZ(0.5); }
+      100% { transform: translateZ(0) scaleZ(1.5); } // Crece en el eje Z de la cámara isométrica
+    }
+  }
+}
+
+/* ==============================================
+   7. QUANTUM FINANCIAL - Trading Candlesticks
+   ============================================== */
+.quantum-scene {
+  .trading-board {
+    position: relative;
+    width: 350px;
+    height: 250px;
+    transform: $iso-transform;
+    transform-style: preserve-3d;
+
+    .chart-grid {
+      position: absolute;
+      width: 100%; height: 100%;
+      background: 
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .candle {
+      position: absolute;
+      width: 14px;
+      transform-style: preserve-3d;
+      
+      .wick {
+        position: absolute;
+        left: 6px; width: 2px; height: 150%; top: -25%;
+        transform: rotateX(90deg) translateY(-2px) rotateX(-90deg);
+      }
+      .body {
+        position: absolute;
+        width: 100%; height: 100%;
+        transform: rotateX(90deg) translateY(-7px) rotateX(-90deg);
+        box-shadow: 0 0 15px currentColor;
+      }
+
+      &.bull { 
+        color: #10b981; 
+        .wick { background: #10b981; }
+        .body { background: #10b981; border: 1px solid #34d399; border-top-color: #6ee7b7; border-right-color: #059669; }
+      }
+      &.bear { 
+        color: #ef4444; 
+        .wick { background: #ef4444; }
+        .body { background: #ef4444; border: 1px solid #f87171; border-top-color: #fca5a5; border-right-color: #b91c1c; }
+      }
+
+      &.c1 { left: 10%; bottom: 20%; height: 40px; transform: translateZ(20px); animation: float-c 4s infinite alternate; }
+      &.c2 { left: 25%; bottom: 40%; height: 60px; transform: translateZ(40px); animation: float-c 3s infinite alternate-reverse; }
+      &.c3 { left: 40%; bottom: 30%; height: 30px; transform: translateZ(30px); animation: float-c 5s infinite alternate; }
+      &.c4 { left: 55%; bottom: 50%; height: 80px; transform: translateZ(50px); animation: float-c 4.5s infinite alternate-reverse; }
+      &.c5 { left: 70%; bottom: 45%; height: 50px; transform: translateZ(45px); animation: float-c 3.5s infinite alternate; }
+      &.c6 { left: 85%; bottom: 70%; height: 70px; transform: translateZ(70px); animation: float-c 4s infinite alternate-reverse; }
+    }
+
+    .trend-line {
+      position: absolute;
+      width: 100%; height: 100%;
+      top: 0; left: 0;
+      transform: translateZ(80px); // Flota encima de las velas
+      filter: drop-shadow(0 0 8px #00ff80);
+      
+      .animated-path {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: draw-line 4s linear infinite alternate;
+      }
+    }
+
+    @keyframes float-c {
+      0% { margin-bottom: 0; }
+      100% { margin-bottom: 20px; }
+    }
+    @keyframes draw-line {
+      to { stroke-dashoffset: 0; }
+    }
+  }
+}

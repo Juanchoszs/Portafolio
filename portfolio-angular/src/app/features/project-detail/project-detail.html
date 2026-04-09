@@ -1,0 +1,219 @@
+<section class="min-h-screen py-24 px-6 md:px-12 max-w-[90rem] mx-auto flex flex-col pt-32">
+  
+  <!-- Encabezado Sticky Backlink -->
+  <a routerLink="/projects" class="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors mb-10 tracking-[0.2em] text-[10px] font-black uppercase">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+    </svg>
+    Retorno a Arquitecturas
+  </a>
+
+  <!-- Maquetación Partida: Mitad Contexto (Izquierda) // Mitad Motor 3D (Derecha) -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+    
+    <!-- === LADO IZQUIERDO: DEEP CONTEXT === -->
+    <div class="col-span-1 lg:col-span-5 flex flex-col pt-4">
+      
+      <!-- Títulos y Roles -->
+      <h1 class="text-4xl md:text-6xl font-black text-white tracking-tighter leading-[0.9] mb-4">
+        {{ project?.title || 'Cargando...' }}
+      </h1>
+      <h2 class="text-xl md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-bold tracking-tight mb-8">
+        {{ project?.role }}
+      </h2>
+
+      <!-- Subtitle -->
+      <div class="px-5 py-3 border-l-2 border-blue-500 bg-blue-500/5 mb-10">
+        <p class="text-white font-medium italic text-lg leading-snug">
+          "{{ project?.subtitle }}"
+        </p>
+      </div>
+
+      <!-- Párrafo General -->
+      <div class="space-y-8 text-gray-400 text-lg leading-relaxed font-light mb-12">
+        <p>
+          <strong class="text-gray-200">Resumen Operacional:</strong> <br>
+          {{ project?.description }}
+        </p>
+
+        <p>
+          <strong class="text-gray-200">El Reto de Ingeniería:</strong> <br>
+          {{ project?.challenge }}
+        </p>
+
+        <p>
+          <strong class="text-gray-200">La Solución y Arquitectura:</strong> <br>
+          {{ project?.solution }}
+        </p>
+      </div>
+
+      <!-- Stack Tecnológico en forma de Listado / Tokens -->
+      <div class="mb-12">
+        <h4 class="text-xs font-black tracking-widest text-gray-500 uppercase mb-5">Tech Stack & Tools</h4>
+        <div class="flex flex-col gap-3">
+          <div *ngFor="let tech of project?.stack" class="flex items-start gap-4">
+            <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-cyan-400 blur-[1px]"></div>
+            <span class="text-sm font-medium text-gray-300">{{ tech }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-auto pt-6 border-t border-white/5">
+        <a *ngIf="project?.link && project?.link !== '#'" [href]="project.link" target="_blank" 
+           class="group/btn w-full px-8 py-5 bg-white text-black font-black uppercase tracking-widest text-sm text-center transition-all shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-blue-500/30 flex items-center justify-center gap-3 active:scale-95">
+          Ingresar al Despliegue en Vivo
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover/btn:translate-x-1 transition-transform">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+
+        <div *ngIf="!project?.link || project?.link === '#'" class="w-full px-8 py-5 border border-red-500/20 bg-red-500/5 text-gray-400 font-bold uppercase tracking-widest text-xs text-center flex items-center justify-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-400">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+          </svg>
+          Despliegue Cerrado (Uso Privado / IP)
+        </div>
+      </div>
+
+    </div>
+
+    <!-- === LADO DERECHO: MOTOR 3D === -->
+    <div class="col-span-1 lg:col-span-7 sticky top-32 perspective-container">
+      
+      <!-- Visor de Animación -->
+      <div class="relative w-full h-[600px] lg:h-[800px] bg-[#020202] border border-white/10 rounded-[3rem] overflow-hidden flex items-center justify-center shadow-2xl group">
+        
+        <!-- Puntos UI de estilo Mac -->
+        <div class="absolute top-6 left-6 flex gap-2 z-50">
+          <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500/50 animate-pulse"></div>
+        </div>
+
+        <div class="absolute top-5 right-6 z-50">
+          <span class="text-[9px] font-mono tracking-widest text-gray-600">3D.ENGINE_RUNNING</span>
+        </div>
+
+        <!-- Ambientación Genérica Espacial -->
+        <div class="absolute inset-0 z-0 opacity-20 group-hover:opacity-40 transition-opacity duration-1000 select-none pointer-events-none">
+          <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-600 rounded-full blur-[150px] mix-blend-screen"></div>
+          <div class="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-600 rounded-full blur-[150px] mix-blend-screen"></div>
+        </div>
+        
+        <!-- Textura Base 3D de fondo -->
+        <div class="absolute inset-0 z-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+CjxwYXRoIGQ9Ik0wIDBoODB2ODBIMHoiIGZpbGw9Im5vbmUiLz4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjIpIi8+Cjwvc3ZnPg==')]"></div>
+
+        <ng-container [ngSwitch]="projectId">
+
+          <!-- ============================================== -->
+          <!-- 1. GOL ICA -->
+          <div *ngSwitchCase="'gol-ica'" class="scene-3d gol-ica-scene w-full h-full flex items-center justify-center z-10 transition-transform hover:scale-110 duration-1000">
+            <div class="isometric-field">
+              <div class="field-line center-line"></div>
+              <div class="field-circle"></div>
+              <div class="penalty-box left"></div>
+              <div class="penalty-box right"></div>
+              <div class="soccer-ball">
+                 <div class="ball-texture"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ============================================== -->
+          <!-- 2. CROMU -->
+          <div *ngSwitchCase="'cromu'" class="scene-3d cromu-scene w-full h-full flex items-center justify-center z-10 transition-transform hover:scale-110 duration-1000">
+            <div class="piggy-bank-system">
+               <div class="coin coin-1"></div>
+               <div class="coin coin-2"></div>
+               <div class="coin coin-3"></div>
+               <div class="bank-cube">
+                  <div class="face front">CROMU</div>
+                  <div class="face back"></div>
+                  <div class="face left"></div>
+                  <div class="face right"></div>
+                  <div class="face top"><div class="coin-slot"></div></div>
+                  <div class="face bottom"></div>
+               </div>
+            </div>
+          </div>
+
+          <!-- ============================================== -->
+          <!-- 3. SIIGO -->
+          <div *ngSwitchCase="'siigo'" class="scene-3d siigo-scene w-full h-full flex items-center justify-center z-10 transition-transform hover:scale-110 duration-1000">
+            <div class="siigo-system">
+               <div class="document doc-1"></div><div class="document doc-2"></div>
+               <div class="document doc-3"></div><div class="document doc-4"></div>
+               <div class="integration-hub">
+                 <div class="ring outer-ring"></div><div class="ring inner-ring"></div>
+                 <div class="data-core">SIIGO</div>
+               </div>
+            </div>
+          </div>
+
+          <!-- ============================================== -->
+          <!-- 4. FUEC -->
+          <div *ngSwitchCase="'fuec'" class="scene-3d fuec-scene w-full h-full flex items-center justify-center z-10 transition-transform hover:scale-110 duration-1000">
+            <div class="printer-3d">
+               <div class="printer-body">
+                  <div class="face top"></div>
+                  <div class="face front"><div class="output-slot"></div></div>
+               </div>
+               <div class="printed-paper">
+                 <div class="line l1"></div><div class="line l2"></div><div class="line l3"></div>
+                 <div class="stamp"></div>
+               </div>
+            </div>
+          </div>
+
+          <!-- ============================================== -->
+          <!-- 5. REMESAS -->
+          <div *ngSwitchCase="'remesas'" class="scene-3d remesas-scene w-full h-full flex items-center justify-center z-10 transition-transform hover:scale-110 duration-1000">
+            <div class="truck-system">
+               <div class="road"></div>
+               <div class="truck">
+                 <div class="cabin"><div class="window"></div></div>
+                 <div class="trailer"><div class="cargo-box">LOGISTICS</div></div>
+                 <div class="wheels">
+                   <div class="wheel w1"></div><div class="wheel w2"></div><div class="wheel w3"></div>
+                 </div>
+               </div>
+            </div>
+          </div>
+
+          <!-- ============================================== -->
+          <!-- 6. TRAZABILIDAD -->
+          <div *ngSwitchCase="'trazabilidad'" class="scene-3d trazabilidad-scene w-full h-full flex items-center justify-center z-10 transition-transform hover:scale-110 duration-1000">
+            <div class="metrics-grid">
+               <div class="bar-3d bar-1"><div class="bar-top"></div><div class="bar-front"></div><div class="bar-side"></div></div>
+               <div class="bar-3d bar-2"><div class="bar-top"></div><div class="bar-front"></div><div class="bar-side"></div></div>
+               <div class="bar-3d bar-3"><div class="bar-top"></div><div class="bar-front"></div><div class="bar-side"></div></div>
+               <div class="bar-3d bar-4"><div class="bar-top"></div><div class="bar-front"></div><div class="bar-side"></div></div>
+               <div class="bar-3d bar-5"><div class="bar-top"></div><div class="bar-front"></div><div class="bar-side"></div></div>
+            </div>
+          </div>
+
+          <!-- ============================================== -->
+          <!-- 7. QUANTUM -->
+          <div *ngSwitchCase="'quantum'" class="scene-3d quantum-scene w-full h-full flex items-center justify-center z-10 transition-transform hover:scale-110 duration-1000">
+            <div class="trading-board">
+               <div class="chart-grid"></div>
+               <div class="candle bull c1"><div class="wick"></div><div class="body"></div></div>
+               <div class="candle bear c2"><div class="wick"></div><div class="body"></div></div>
+               <div class="candle bull c3"><div class="wick"></div><div class="body"></div></div>
+               <div class="candle bear c4"><div class="wick"></div><div class="body"></div></div>
+               <div class="candle bull c5"><div class="wick"></div><div class="body"></div></div>
+               <div class="candle bull c6"><div class="wick"></div><div class="body"></div></div>
+               
+               <svg class="trend-line" viewBox="0 0 500 200">
+                 <path d="M0,150 L100,120 L200,140 L300,50 L400,80 L500,20" stroke="rgba(0, 255, 128, 0.8)" stroke-width="4" fill="none" class="animated-path"/>
+               </svg>
+            </div>
+          </div>
+
+        </ng-container>
+
+      </div>
+    </div>
+
+  </div>
+</section>
